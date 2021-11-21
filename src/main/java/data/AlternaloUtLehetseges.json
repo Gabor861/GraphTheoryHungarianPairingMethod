@@ -1,0 +1,18 @@
+{
+  "version" : 1.0,
+  "description": "Teljes egyszerű párosítás lehetséges.",
+  "graph" : {
+    "vertex" : [1,2,3,4],
+    "edge" : [
+      [1,4],
+      [1,2],
+      [3,4]
+    ],
+    "groups" : {
+      "A" : [1,3],
+      "B" : [2,4]
+    },
+    "pairing" : []
+  },
+  "startGroup" : "A"
+}
