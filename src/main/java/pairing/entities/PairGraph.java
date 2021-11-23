@@ -39,8 +39,6 @@ public class PairGraph {
 
     /**
      * Végállapot
-     * @param visitedVertex
-     * @return
      */
     public List<IntegerEdge> getPairlessUnvisitedVertexEdgeFromOtherGroup(AlternaloUt alternaloUt)
     {
@@ -54,6 +52,35 @@ public class PairGraph {
                 )
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Végállapot
+     */
+    public List<IntegerEdge> getInPairedUnvisitedVertexEdgeFromOtherGroup(AlternaloUt alternaloUt)
+    {
+
+        if (isVertexInStartGroup(alternaloUt.actualVertex)) {
+            return edges
+                    .stream()
+                    .filter(
+                            integerEdge ->
+                                    integerEdge.pointIn(alternaloUt.actualVertex)
+                                            && hasPair(integerEdge.getDestination())
+                                            && !alternaloUt.containsVisitedVertex(integerEdge.getDestination())
+                    )
+                    .collect(Collectors.toList());
+        }
+        return edges
+                .stream()
+                .filter(
+                        integerEdge ->
+                                integerEdge.pointIn(alternaloUt.actualVertex)
+                                        && hasPair(integerEdge.getSource())
+                                        && !alternaloUt.containsVisitedVertex(integerEdge.getSource())
+                )
+                .collect(Collectors.toList());
+    }
+
 
     /**
      * Keresés folytatódik

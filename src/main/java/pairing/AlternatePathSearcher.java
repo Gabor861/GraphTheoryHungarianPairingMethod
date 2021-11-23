@@ -19,14 +19,15 @@ public class AlternatePathSearcher {
             return alternaloUt;
         }
 
-        for (IntegerEdge integerEdge: graph.getPairlessUnvisitedVertexEdgeFromOtherGroup(alternaloUt)) {
+        for (IntegerEdge integerEdge: graph.getInPairedUnvisitedVertexEdgeFromOtherGroup(alternaloUt)) {
+
             AlternaloUt deepCopiedAlternaloUt = ObjectCloneUtil.getDeepCopy(alternaloUt);
-            deepCopiedAlternaloUt.path.push(integerEdge);
+            deepCopiedAlternaloUt.addEdgeToPath(integerEdge);
 
             return searchCorrectionalPath(graph, deepCopiedAlternaloUt);
         }
 
-        throw new KonigAkadalyException("Graph-ban königakadály található!");
+        throw new KonigAkadalyException("Graph-ban königakadály található!", graph, alternaloUt);
     }
 
     private Optional<AlternaloUt> searchEndState(PairGraph pairGraph, AlternaloUt alternaloUt)
@@ -34,7 +35,7 @@ public class AlternatePathSearcher {
         List<IntegerEdge> graphPairlessUnvisitedVertexFromOtherGroup =
                 pairGraph.getPairlessUnvisitedVertexEdgeFromOtherGroup(alternaloUt);
         if (!graphPairlessUnvisitedVertexFromOtherGroup.isEmpty()) {
-            alternaloUt.path.push(graphPairlessUnvisitedVertexFromOtherGroup.get(0));
+            alternaloUt.addEdgeToPath(graphPairlessUnvisitedVertexFromOtherGroup.get(0));
 
             return Optional.of(alternaloUt);
         }

@@ -8,10 +8,10 @@ public class PathCorrector
 {
     public void correctPathBy(PairGraph pairGraph, AlternaloUt alternaloUt)
     {
-        while (!alternaloUt.path.isEmpty()) {
+        while (!alternaloUt.isEmptyPath()) {
             alterPairing(
                 pairGraph,
-                alternaloUt.path.pop()
+                alternaloUt.getLastPathElement()
             );
         }
     }

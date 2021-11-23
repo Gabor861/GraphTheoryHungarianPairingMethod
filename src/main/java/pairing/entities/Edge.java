@@ -29,4 +29,9 @@ public class Edge<T> {
     {
         return pointIn(point1) && pointIn(point2);
     }
+
+    public boolean isSourceVertex(T vertex)
+    {
+        return source.equals(vertex);
+    }
 }

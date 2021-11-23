@@ -1,13 +1,15 @@
 package pairing.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-@Builder
 public class AlternaloUt
 {
     public Integer startVertex;
@@ -29,14 +31,39 @@ public class AlternaloUt
         }
         return visitedVertex;
     }
-
+    @JsonIgnore
     public static AlternaloUt buildByStartVertex(Integer startVertex)
     {
-        return AlternaloUt
-            .builder()
-            .actualVertex(startVertex)
-            .startVertex(startVertex)
-            .path(new Stack<IntegerEdge>())
-            .build();
+        AlternaloUt alternaloUt = new AlternaloUt();
+        alternaloUt.actualVertex = startVertex;
+        alternaloUt.startVertex = startVertex;
+        alternaloUt.path = new Stack<IntegerEdge>();
+        return alternaloUt;
+    }
+    @JsonIgnore
+    public void addEdgeToPath(IntegerEdge integerEdge)
+    {
+        setActualVertex(integerEdge);
+        path.push(integerEdge);
+    }
+    @JsonIgnore
+    private void setActualVertex(IntegerEdge integerEdge)
+    {
+        if (isEmptyPath() || path.lastElement().isSourceVertex(actualVertex)) {
+            actualVertex = integerEdge.getDestination();
+        } else {
+            actualVertex = integerEdge.getSource();
+        }
+    }
+    @JsonIgnore
+    public boolean isEmptyPath()
+    {
+        return path.isEmpty();
+    }
+
+    @JsonIgnore
+    public IntegerEdge getLastPathElement()
+    {
+        return path.pop();
     }
 }

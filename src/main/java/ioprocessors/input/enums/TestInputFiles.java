@@ -6,14 +6,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @AllArgsConstructor
-public enum TestInputFiles {
-
-    Simple("SimplePairingGraph.json"),
-    Simple2("SimplePairingGraph2.json"),
-    WithoutTotalPairing("VanOlyanPontAhonnanNemVezetEl.json"),
-    WithPossibleAltenativePath("AlternaloUtLehetseges.json");
+public enum TestInputFiles
+{
+    SIMPLE("SimplePairingGraph.json"),
+    SIMPLE2("SimplePairingGraph2.json"),
+    WITHOUT_TOTAL_PAIRING("VanOlyanPontAhonnanNemVezetEl.json"),
+    WITH_POSSIBLE_ALTENATIVE_PATH("AlternaloUtLehetseges.json"),
+    KONIG_AKADALY_01("KonigAkadaly01.json");
 
     String filename;
+
+    public final static TestInputFiles KIVALASZTOTT = TestInputFiles.KONIG_AKADALY_01;
 
     public Path getFilePath()
     {
@@ -27,7 +30,8 @@ public enum TestInputFiles {
         );
     }
 
-    public static String getActualProcessedTestGraph() {
-        return TestInputFiles.WithPossibleAltenativePath.getFilePath().toString();
+    public static String getActualProcessedTestGraph()
+    {
+        return KIVALASZTOTT.getFilePath().toString();
     }
 }
