@@ -5,9 +5,11 @@ import pairing.exceptions.GraphTheoryException;
 
 import java.io.IOException;
 
-public class ObjectCloneUtil {
+public class ObjectCloneUtil
+{
+    private ObjectCloneUtil() {}
 
-    public static <T extends Object> T getDeepCopy(T pm)
+    public static <T> T getDeepCopy(T pm)
     {
         ObjectMapper objectMapper = new ObjectMapper();
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Edge<T> {
+abstract class Edge<T> {
 
     private String label;
 
@@ -23,11 +23,6 @@ public class Edge<T> {
     public String getLabel()
     {
         return label;
-    }
-
-    public boolean isConnectThatTwoPoint(T point1, T point2)
-    {
-        return pointIn(point1) && pointIn(point2);
     }
 
     public boolean isSourceVertex(T vertex)

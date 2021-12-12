@@ -100,7 +100,7 @@ public class PairGraph {
 
     private String getOtherGroup()
     {
-        Set set = groups.keySet();
+        Set<String> set = groups.keySet();
         set.remove(startGroup);
         return (String) set.toArray()[0];
     }

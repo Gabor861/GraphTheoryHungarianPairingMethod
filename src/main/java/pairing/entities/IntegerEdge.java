@@ -14,6 +14,6 @@ public class IntegerEdge extends Edge<Integer> {
 
     @Override
     public String getLabel() {
-        return String.valueOf(getSource()) + String.valueOf(getDestination());
+        return getSource() + String.valueOf(getDestination());
     }
 }

@@ -4,7 +4,7 @@ import pairing.entities.AlternaloUt;
 import pairing.entities.IntegerEdge;
 import pairing.entities.PairGraph;
 
-public class PathCorrector
+class PathCorrector
 {
     public void correctPathBy(PairGraph pairGraph, AlternaloUt alternaloUt)
     {

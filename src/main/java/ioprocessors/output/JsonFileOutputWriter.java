@@ -2,40 +2,53 @@ package ioprocessors.output;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ioprocessors.input.enums.TestInputFiles;
-import pairing.entities.PairGraph;
+import ioprocessors.output.exceptions.OutputFailedException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
 public class JsonFileOutputWriter
 {
-    public <T> void pullToOutput(T object)
-    {
-        pullToOutput(object, TestInputFiles.KIVALASZTOTT);
-    }
+    private static final String OUPUT_FILE_EXTENSION = ".json";
+
+    private static final String OUPUT_FILE_DATETIME_FORMAT = "yyyyMMdd_HHmmss";
 
     public <T> void pullToOutput(T object, TestInputFiles testInputFiles)
     {
         try {
-            File file = Paths.get(
-                System.getProperty("user.dir"),
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
-                    + "-"
-                    + testInputFiles.name()
-                    + "_"
-                    + object.getClass().getName()
-                            + "_"
-                    + UUID.randomUUID()
-                    + ".json"
-            ).toFile();
-
-            new ObjectMapper().writeValue(file, object);
+            new ObjectMapper().writeValue(getFile(object, testInputFiles), object);
         } catch (IOException ioException) {
             throw new OutputFailedException("A kiírás nem sikerült!", ioException);
         }
+    }
+
+    private <T> File getFile(T object, TestInputFiles testInputFiles)
+    {
+        return
+            Paths.get(
+                System.getProperty("user.dir"),
+                getOutputFileName(
+                    object.getClass().getName(),
+                    testInputFiles
+                )
+            ).toFile();
+    }
+
+    private String getOutputFileName(String className, TestInputFiles testInputFiles)
+    {
+        return
+            getOutputFileDatetime()
+            + "-" + testInputFiles.name()
+            + "_" + className
+            // + "_" + UUID.randomUUID()
+            + OUPUT_FILE_EXTENSION;
+    }
+
+    private String getOutputFileDatetime()
+    {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(OUPUT_FILE_DATETIME_FORMAT));
     }
 }

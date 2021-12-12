@@ -9,28 +9,38 @@ import utils.ObjectCloneUtil;
 import java.util.List;
 import java.util.Optional;
 
-public class AlternatePathSearcher {
-
-    public AlternaloUt searchCorrectionalPath(
-            PairGraph graph,
-            AlternaloUt alternaloUt
-    ) {
-        if (searchEndState(graph, alternaloUt).isPresent()) {
+class AlternatePathSearcher
+{
+    public AlternaloUt alternaloUtKereses(PairGraph graph, AlternaloUt alternaloUt)
+    {
+        if (alternaloUtLezarasanakKeresese(graph, alternaloUt).isPresent()) {
             return alternaloUt;
         }
-
-        for (IntegerEdge integerEdge: graph.getInPairedUnvisitedVertexEdgeFromOtherGroup(alternaloUt)) {
-
-            AlternaloUt deepCopiedAlternaloUt = ObjectCloneUtil.getDeepCopy(alternaloUt);
-            deepCopiedAlternaloUt.addEdgeToPath(integerEdge);
-
-            return searchCorrectionalPath(graph, deepCopiedAlternaloUt);
-        }
-
-        throw new KonigAkadalyException("Graph-ban königakadály található!", graph, alternaloUt);
+        return getBovitettAlternaloUt(graph, alternaloUt);
     }
 
-    private Optional<AlternaloUt> searchEndState(PairGraph pairGraph, AlternaloUt alternaloUt)
+    private AlternaloUt getBovitettAlternaloUt(PairGraph graph, AlternaloUt alternaloUt)
+    {
+        for (IntegerEdge integerEdge: graph.getInPairedUnvisitedVertexEdgeFromOtherGroup(alternaloUt)) {
+            return alternaloUtKereses(
+                graph,
+                getUjEllelKiegeszitettAlternaloUtMasolat(
+                    alternaloUt,
+                    integerEdge
+                )
+            );
+        }
+
+        throw new KonigAkadalyException(graph, alternaloUt);
+    }
+
+    private AlternaloUt getUjEllelKiegeszitettAlternaloUtMasolat(AlternaloUt alternaloUt, IntegerEdge integerEdge) {
+        AlternaloUt deepCopiedAlternaloUt = ObjectCloneUtil.getDeepCopy(alternaloUt);
+        deepCopiedAlternaloUt.addEdgeToPath(integerEdge);
+        return deepCopiedAlternaloUt;
+    }
+
+    private Optional<AlternaloUt> alternaloUtLezarasanakKeresese(PairGraph pairGraph, AlternaloUt alternaloUt)
     {
         List<IntegerEdge> graphPairlessUnvisitedVertexFromOtherGroup =
                 pairGraph.getPairlessUnvisitedVertexEdgeFromOtherGroup(alternaloUt);

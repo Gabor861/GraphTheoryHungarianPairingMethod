@@ -1,7 +1,7 @@
-import ioprocessors.input.InputProcessor;
+import ioprocessors.input.PairGraphInputProcessor;
 import ioprocessors.input.enums.TestInputFiles;
 import ioprocessors.output.JsonFileOutputWriter;
-import pairing.HungarianPairingMethod;
+import pairing.HungarianPairingMethodStrategy;
 import pairing.exceptions.GraphTheoryException;
 import pairing.exceptions.KonigAkadalyException;
 
@@ -18,15 +18,15 @@ public class HungarianPairingConsoleApplication
     public static void main(String[] args)
     {
         jsonFileOutputWriter = new JsonFileOutputWriter();
-        Arrays.stream(TestInputFiles.values()).forEach(testInputFiles -> futtatas(testInputFiles));
+        Arrays.stream(TestInputFiles.values()).forEach(HungarianPairingConsoleApplication::futtatas);
     }
 
     private static void futtatas(TestInputFiles testInputFiles) {
 
         try {
             jsonFileOutputWriter.pullToOutput(
-                    new HungarianPairingMethod().pairing(
-                            InputProcessor.createJsonGraphInputProcessor().getPairGraph(
+                    HungarianPairingMethodStrategy.create().pairing(
+                            PairGraphInputProcessor.createJsonGraphInputProcessor().getPairGraph(
                                     testInputFiles.getFilePath().toString()
                             )
                     ),

@@ -16,8 +16,6 @@ public enum TestInputFiles
 
     String filename;
 
-    public final static TestInputFiles KIVALASZTOTT = TestInputFiles.KONIG_AKADALY_01;
-
     public Path getFilePath()
     {
         return Paths.get(
@@ -28,10 +26,5 @@ public enum TestInputFiles
                 "data",
                 filename
         );
-    }
-
-    public static String getActualProcessedTestGraph()
-    {
-        return KIVALASZTOTT.getFilePath().toString();
     }
 }

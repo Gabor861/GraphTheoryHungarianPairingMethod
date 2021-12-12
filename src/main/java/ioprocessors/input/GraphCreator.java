@@ -1,6 +1,6 @@
 package ioprocessors.input;
 
-import ioprocessors.input.entities.GraphInputFile;
+import ioprocessors.input.entities.GraphInputFileV1;
 import pairing.entities.IntegerEdge;
 import pairing.entities.PairGraph;
 
@@ -9,8 +9,7 @@ import java.util.List;
 
 public class GraphCreator
 {
-
-    public PairGraph mapToPairGraph(GraphInputFile graphInput)
+    public PairGraph mapToPairGraph(GraphInputFileV1 graphInput)
     {
         PairGraph pairGraph = new PairGraph();
         pairGraph.setStartGroup(graphInput.getStartGroup());

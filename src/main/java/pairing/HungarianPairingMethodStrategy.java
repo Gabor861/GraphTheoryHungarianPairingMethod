@@ -1,19 +1,24 @@
 package pairing;
 
+import lombok.AllArgsConstructor;
 import pairing.entities.AlternaloUt;
 import pairing.entities.PairGraph;
 
 import java.util.List;
 
-public class HungarianPairingMethod {
+@AllArgsConstructor
+public class HungarianPairingMethodStrategy
+{
+    private PathCorrector pathCorrector;
 
-    PathCorrector pathCorrector;
+    private AlternatePathSearcher alternatePathSearcher;
 
-    AlternatePathSearcher alternatePathSearcher;
-
-    public HungarianPairingMethod() {
-        pathCorrector = new PathCorrector();
-        alternatePathSearcher = new AlternatePathSearcher();
+    public static HungarianPairingMethodStrategy create()
+    {
+        return new HungarianPairingMethodStrategy(
+            new PathCorrector(),
+            new AlternatePathSearcher()
+        );
     }
 
     public PairGraph pairing(PairGraph graph)
@@ -32,7 +37,7 @@ public class HungarianPairingMethod {
     {
         this.pathCorrector.correctPathBy(
             graph,
-            alternatePathSearcher.searchCorrectionalPath(
+            alternatePathSearcher.alternaloUtKereses(
                 graph,
                 AlternaloUt.buildByStartVertex(pairlessVertex)
             )

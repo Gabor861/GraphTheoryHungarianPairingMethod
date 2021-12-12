@@ -12,8 +12,8 @@ public class KonigAkadalyException extends GraphTheoryException
 {
     Map<String, Object> stringObjectMap = new HashMap<>();
 
-    public KonigAkadalyException(String message, PairGraph pairGraph, AlternaloUt alternaloUt) {
-        super(message);
+    public KonigAkadalyException(PairGraph pairGraph, AlternaloUt alternaloUt) {
+        super("Graph-ban königakadály található!");
         stringObjectMap.put("pairGraph", pairGraph);
         stringObjectMap.put("alternaloUt", alternaloUt);
     }
