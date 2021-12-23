@@ -1,11 +1,14 @@
 package pairing.entities;
 
-import lombok.AllArgsConstructor;
-
 import java.util.List;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class IntegerEdge extends Edge<Integer> {
+    public IntegerEdge(int source, int destination) {
+        setSource(source);
+        setDestination(destination);
+    }
 
     @Override
     public boolean pointIn(Integer point) {

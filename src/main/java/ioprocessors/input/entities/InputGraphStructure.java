@@ -1,13 +1,11 @@
 package ioprocessors.input.entities;
 
-import lombok.Data;
-
 import java.util.List;
 import java.util.Map;
+import lombok.Data;
 
 @Data
-public class InputGraphStructure
-{
+public class InputGraphStructure {
     private List<Integer> vertex;
 
     private List<List<Integer>> edge;

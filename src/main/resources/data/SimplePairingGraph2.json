@@ -1,11 +1,12 @@
 {
   "version" : 1.0,
-  "description": "Teljes egyszerű párosítás lehetséges.",
+  "description": "Teljes egyszerű párosítás lehetséges. Az elvárt párosítás [[1,2],[3,4]]",
   "graph" : {
     "vertex" : [1,2,3,4],
     "edge" : [
+      [1,2],
       [1,4],
-      [1,2]
+      [3,4]
     ],
     "groups" : {
       "A" : [1,3],

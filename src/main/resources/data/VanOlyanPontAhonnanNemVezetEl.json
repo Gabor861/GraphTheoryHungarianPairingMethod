@@ -1,12 +1,11 @@
 {
   "version" : 1.0,
-  "description": "Teljes egyszerű párosítás lehetséges.",
+  "description": "König akadály detektálható! Mivel A csoport 3 - as pontjából nem vezet él.",
   "graph" : {
     "vertex" : [1,2,3,4],
     "edge" : [
-      [1,2],
       [1,4],
-      [3,4]
+      [1,2]
     ],
     "groups" : {
       "A" : [1,3],

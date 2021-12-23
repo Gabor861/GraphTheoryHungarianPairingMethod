@@ -1,4 +1,3 @@
 package ioprocessors.input.entities;
 
-public class GraphInputFileV1 extends GraphInputFile<InputGraphStructure>{
-}
+public class GraphInputFileV1 extends GraphInputFile<InputGraphStructure> {}
