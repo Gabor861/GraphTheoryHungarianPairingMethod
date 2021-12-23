@@ -1,7 +1,6 @@
 package pairing.exceptions;
 
-public class GraphTheoryException extends RuntimeException
-{
+public class GraphTheoryException extends RuntimeException {
     public GraphTheoryException(String message) {
         super(message);
     }

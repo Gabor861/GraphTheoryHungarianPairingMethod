@@ -1,8 +1,7 @@
 package pairing.entities;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 abstract class Edge<T> {
@@ -15,18 +14,19 @@ abstract class Edge<T> {
 
     private double weight;
 
-    public boolean pointIn(T point)
-    {
+    public boolean pointIn(T point) {
         return List.of(source, destination).contains(point);
     }
 
-    public String getLabel()
-    {
+    public String getLabel() {
         return label;
     }
 
-    public boolean isSourceVertex(T vertex)
-    {
+    public boolean isSourceVertex(T vertex) {
         return source.equals(vertex);
+    }
+
+    public T getOpponentVertex(T vertex) {
+        return source == vertex ? destination : source;
     }
 }

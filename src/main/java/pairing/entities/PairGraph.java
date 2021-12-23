@@ -1,11 +1,10 @@
 package pairing.entities;
 
-import lombok.Data;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.Data;
 
 @Data
 public class PairGraph {
@@ -18,8 +17,7 @@ public class PairGraph {
 
     private List<IntegerEdge> pairEdges;
 
-    public void deleteFromPairedEdge(IntegerEdge integerEdge)
-    {
+    public void deleteFromPairedEdge(IntegerEdge integerEdge) {
         pairEdges.remove(integerEdge);
     }
 
@@ -27,91 +25,93 @@ public class PairGraph {
         return pairEdges.contains(integerEdge);
     }
 
-    public List<Integer> getPairlessVertexFromStartGroup()
-    {
-        return listOfStartGroupVertex().stream().filter(vertex -> !hasPair(vertex)).collect(Collectors.toList());
+    public List<Integer> getPairlessVertexFromStartGroup() {
+        return listOfStartGroupVertex().stream()
+                .filter(vertex -> !hasPair(vertex))
+                .collect(Collectors.toList());
     }
 
-    private List<Integer> listOfStartGroupVertex()
-    {
+    private List<Integer> listOfStartGroupVertex() {
         return groups.get(startGroup);
     }
 
-    /**
-     * Végállapot
-     */
-    public List<IntegerEdge> getPairlessUnvisitedVertexEdgeFromOtherGroup(AlternaloUt alternaloUt)
-    {
-        return edges
-                .stream()
-                .filter(
-                    integerEdge ->
-                        integerEdge.pointIn(alternaloUt.actualVertex)
-                        && !hasPair(integerEdge.getDestination())
-                        && !alternaloUt.containsVisitedVertex(integerEdge.getDestination())
-                )
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Végállapot
-     */
-    public List<IntegerEdge> getInPairedUnvisitedVertexEdgeFromOtherGroup(AlternaloUt alternaloUt)
-    {
-
-        if (isVertexInStartGroup(alternaloUt.actualVertex)) {
-            return edges
-                    .stream()
-                    .filter(
-                            integerEdge ->
-                                    integerEdge.pointIn(alternaloUt.actualVertex)
-                                            && hasPair(integerEdge.getDestination())
-                                            && !alternaloUt.containsVisitedVertex(integerEdge.getDestination())
-                    )
-                    .collect(Collectors.toList());
+    /** Végállapot */
+    public List<IntegerEdge> getPairlessUnvisitedVertexEdgeFromOtherGroup(AlternaloUt alternaloUt) {
+        if (!isVertexInStartGroup(alternaloUt.actualVertex)) {
+            return List.of();
         }
-        return edges
-                .stream()
+
+        List<IntegerEdge> kapcsolodoElek =
+                edges.stream()
+                        .filter(integerEdge -> integerEdge.pointIn(alternaloUt.getActualVertex()))
+                        .collect(Collectors.toList());
+        List<IntegerEdge> nemParositott =
+                kapcsolodoElek.stream()
+                        .filter(
+                                integerEdge ->
+                                        !hasPair(
+                                                integerEdge.getOpponentVertex(
+                                                        alternaloUt.getActualVertex())))
+                        .collect(Collectors.toList());
+        return nemParositott.stream()
                 .filter(
                         integerEdge ->
-                                integerEdge.pointIn(alternaloUt.actualVertex)
-                                        && hasPair(integerEdge.getSource())
-                                        && !alternaloUt.containsVisitedVertex(integerEdge.getSource())
-                )
+                                !alternaloUt.containsVisitedVertex(
+                                        integerEdge.getOpponentVertex(
+                                                alternaloUt.getActualVertex())))
                 .collect(Collectors.toList());
     }
 
+    /** Végállapot */
+    public List<IntegerEdge> getInPairedUnvisitedVertexEdgeFromOtherGroup(AlternaloUt alternaloUt) {
+
+        if (isVertexInStartGroup(alternaloUt.getActualVertex())) {
+            return edges.stream()
+                    .filter(
+                            integerEdge ->
+                                    integerEdge.pointIn(alternaloUt.getActualVertex())
+                                            && hasPair(
+                                                    integerEdge.getOpponentVertex(
+                                                            alternaloUt.getActualVertex()))
+                                            && !alternaloUt.containsVisitedVertex(
+                                                    integerEdge.getOpponentVertex(
+                                                            alternaloUt.getActualVertex())))
+                    .collect(Collectors.toList());
+        }
+        return pairEdges.stream()
+                .filter(
+                        integerEdge ->
+                                integerEdge.pointIn(alternaloUt.getActualVertex())
+                                        /* && hasPair(alternaloUt.getActualVertex())*/
+                                        && !alternaloUt.containsVisitedVertex(
+                                                integerEdge.getOpponentVertex(
+                                                        alternaloUt.getActualVertex())))
+                .collect(Collectors.toList());
+    }
 
     /**
      * Keresés folytatódik
+     *
      * @param visitedVertex
      * @return
      */
-    public List<Integer> getInPairUnvisitedVertexFromOtherGroup(Set<Integer> visitedVertex)
-    {
-        return groups
-                .get(getOtherGroup())
-                .stream()
-                .filter(
-                        vertex -> hasPair(vertex) && !visitedVertex.contains(vertex)
-                )
+    public List<Integer> getInPairUnvisitedVertexFromOtherGroup(Set<Integer> visitedVertex) {
+        return groups.get(getOtherGroup()).stream()
+                .filter(vertex -> hasPair(vertex) && !visitedVertex.contains(vertex))
                 .collect(Collectors.toList());
     }
 
-    private String getOtherGroup()
-    {
+    private String getOtherGroup() {
         Set<String> set = groups.keySet();
         set.remove(startGroup);
         return (String) set.toArray()[0];
     }
 
-    public boolean hasPair(Integer vertex)
-    {
+    public boolean hasPair(Integer vertex) {
         return pairEdges.stream().filter(pairEdge -> pairEdge.pointIn(vertex)).count() != 0;
     }
 
-    public boolean equalsOfPointOfGroups()
-    {
+    public boolean equalsOfPointOfGroups() {
         if (groups.size() == 2) {
             String[] strings = groups.keySet().toArray(String[]::new);
             return groups.get(strings[0]).size() == groups.get(strings[1]).size();
@@ -119,26 +119,19 @@ public class PairGraph {
         return false;
     }
 
-    public List<IntegerEdge> getVertexConnectedEdge(Integer vertex)
-    {
-        return edges
-            .stream()
-            .filter(asd -> asd.pointIn(vertex))
-            .collect(Collectors.toList());
+    public List<IntegerEdge> getVertexConnectedEdge(Integer vertex) {
+        return edges.stream().filter(asd -> asd.pointIn(vertex)).collect(Collectors.toList());
     }
 
-    private boolean isVertexInStartGroup(Integer vertex)
-    {
+    private boolean isVertexInStartGroup(Integer vertex) {
         return listOfStartGroupVertex().contains(vertex);
     }
 
-    public void addToPairing(IntegerEdge integerEdge)
-    {
+    public void addToPairing(IntegerEdge integerEdge) {
         pairEdges.add(integerEdge);
     }
 
-    public void deleteFromPairing(IntegerEdge integerEdge)
-    {
+    public void deleteFromPairing(IntegerEdge integerEdge) {
         pairEdges.add(integerEdge);
     }
 }

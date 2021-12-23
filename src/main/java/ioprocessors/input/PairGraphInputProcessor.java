@@ -8,24 +8,17 @@ import pairing.entities.PairGraph;
 
 @Slf4j
 @AllArgsConstructor
-public class PairGraphInputProcessor
-{
+public class PairGraphInputProcessor {
     private JsonFileReader<GraphInputFileV1> graphInputFileV1JsonFileReader;
 
     private GraphCreator graphCreator;
 
-    public static PairGraphInputProcessor createJsonGraphInputProcessor()
-    {
-        return new PairGraphInputProcessor(
-                new JsonFileReader<>(),
-            new GraphCreator()
-        );
+    public static PairGraphInputProcessor createJsonGraphInputProcessor() {
+        return new PairGraphInputProcessor(new JsonFileReader<>(), new GraphCreator());
     }
 
-    public PairGraph getPairGraph(String s)
-    {
+    public PairGraph getPairGraph(String s) {
         return graphCreator.mapToPairGraph(
-            graphInputFileV1JsonFileReader.readFile(s, GraphInputFileV1.class)
-        );
+                graphInputFileV1JsonFileReader.readFile(s, GraphInputFileV1.class));
     }
 }
